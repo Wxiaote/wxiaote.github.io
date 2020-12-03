@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>存储 on Wxiaote</title>
+    <link>https://wxiaote.gitee.io/categories/%E5%AD%98%E5%82%A8/</link>
+    <description>Recent content in 存储 on Wxiaote</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Wxiaote</copyright>
+    <lastBuildDate>Tue, 18 Feb 2020 19:34:26 +0800</lastBuildDate><atom:link href="https://wxiaote.gitee.io/categories/%E5%AD%98%E5%82%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>phxpaxos 项目的演示和实验</title>
+      <link>https://wxiaote.gitee.io/post/2020/20200218/</link>
+      <pubDate>Tue, 18 Feb 2020 19:34:26 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2020/20200218/</guid>
+      <description>linux环境配置 1 2 3 4 5 6 7 helloworld@Vostro:~/Downloads/automake-1.14$ uname -a Linux Vostro 5.3.0-40-generic #32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux helloworld@Vostro:~$ cat /etc/lsb-release DISTRIB_ID=Ubuntu DISTRIB_RELEASE=18.04 DISTRIB_CODENAME=bionic DISTRIB_DESCRIPTION=&amp;#34;Ubuntu 18.04.4 LTS&amp;#34; 下载 phpaxos 源码 1 git clone https://github.com/Tencent/phxpaxos.git --recursive 下载过程中, 可能会报这样的错, 在运</description>
+    </item>
+    
+  </channel>
+</rss>

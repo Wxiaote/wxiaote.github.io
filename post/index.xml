@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Wxiaote</title>
+    <link>https://wxiaote.gitee.io/post/</link>
+    <description>Recent content in Posts on Wxiaote</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Wxiaote</copyright>
+    <lastBuildDate>Mon, 16 Nov 2020 08:26:14 +0800</lastBuildDate><atom:link href="https://wxiaote.gitee.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>archlinux 入坑|如何从零安装arclinux</title>
+      <link>https://wxiaote.gitee.io/post/2020/20201116/</link>
+      <pubDate>Mon, 16 Nov 2020 08:26:14 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2020/20201116/</guid>
+      <description>安装系统之前 验证 验证安装包 1 2 $ gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig $ pacman-key -v archlinux-version-x86_64.iso.sig 设置键盘（一般不设置） 1 2 ls /usr/share/kbd/keymaps/**/*.map.gz # loadkeys de-latin1 判断机器是否是可以安装 Archlinux 1 # ls /sys/firmware/efi/efivars //文件夹下是否有固件</description>
+    </item>
+    
+    <item>
+      <title>phxpaxos 项目的演示和实验</title>
+      <link>https://wxiaote.gitee.io/post/2020/20200218/</link>
+      <pubDate>Tue, 18 Feb 2020 19:34:26 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2020/20200218/</guid>
+      <description>linux环境配置 1 2 3 4 5 6 7 helloworld@Vostro:~/Downloads/automake-1.14$ uname -a Linux Vostro 5.3.0-40-generic #32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux helloworld@Vostro:~$ cat /etc/lsb-release DISTRIB_ID=Ubuntu DISTRIB_RELEASE=18.04 DISTRIB_CODENAME=bionic DISTRIB_DESCRIPTION=&amp;#34;Ubuntu 18.04.4 LTS&amp;#34; 下载 phpaxos 源码 1 git clone https://github.com/Tencent/phxpaxos.git --recursive 下载过程中, 可能会报这样的错, 在运</description>
+    </item>
+    
+    <item>
+      <title>域名解析 | A记录 ，CNAME，MX，NS 你懂了吗</title>
+      <link>https://wxiaote.gitee.io/post/2019/20191111/</link>
+      <pubDate>Mon, 11 Nov 2019 10:23:57 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2019/20191111/</guid>
+      <description>域名解析 | A记录 ，CNAME，MX，NS 你懂了吗 域名解析 什么是域名解析？域名解析就是国际域名或者国内域名以及中文域名等域名申请后做的到IP地</description>
+    </item>
+    
+    <item>
+      <title>Forsaken Mail创建临时邮箱系统| 手把手教程</title>
+      <link>https://wxiaote.gitee.io/post/2019/20191030/</link>
+      <pubDate>Tue, 29 Oct 2019 12:47:49 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2019/20191030/</guid>
+      <description>场景需求 不需要长时间使用的邮箱 需要大量创建临时邮箱 使用匿名邮箱 环境说明 ** Forsaken Mail是一个临时邮箱系统，可以供任何人接受邮件，即收即毁，支持自</description>
+    </item>
+    
+    <item>
+      <title>Golang 类型定义总结手册| 面试最基础</title>
+      <link>https://wxiaote.gitee.io/post/2019/20191029/</link>
+      <pubDate>Tue, 29 Oct 2019 10:22:34 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2019/20191029/</guid>
+      <description>变量 var 关键字是 var ，定义后须被调用 支持多个同时定义 支持使用 := 缺省定义 变量定义（声明） 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 //使用var</description>
+    </item>
+    
+  </channel>
+</rss>
