@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>archlinux 入坑|如何从零安装arclinux - Wxiaote</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Wxiaote" /><meta name="description" content="安装系统之前 验证 验证安装包 1 2 $ gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig $ pacman-key -v archlinux-version-x86_64.iso.sig 设置键盘（一般不设置） 1 2 ls /usr/share/kbd/keymaps/**/*.map.gz # loadkeys de-latin1 判断机器是否是可以安装 Archlinux 1 # ls /sys/firmware/efi/efivars //文件夹下是否有固件" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.77.0 with theme even" />
+
+
+<link rel="canonical" href="https://wxiaote.gitee.io/post/2020/20201116/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.46e432cab0205a872fc473c5c5a55521696198b9fdc55b7e68db06ab0d9e504f.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="archlinux 入坑|如何从零安装arclinux" />
+<meta property="og:description" content="安装系统之前 验证 验证安装包 1 2 $ gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig $ pacman-key -v archlinux-version-x86_64.iso.sig 设置键盘（一般不设置） 1 2 ls /usr/share/kbd/keymaps/**/*.map.gz # loadkeys de-latin1 判断机器是否是可以安装 Archlinux 1 # ls /sys/firmware/efi/efivars //文件夹下是否有固件" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxiaote.gitee.io/post/2020/20201116/" />
+<meta property="article:published_time" content="2020-11-16T08:26:14+08:00" />
+<meta property="article:modified_time" content="2020-11-16T08:26:14+08:00" />
+<meta itemprop="name" content="archlinux 入坑|如何从零安装arclinux">
+<meta itemprop="description" content="安装系统之前 验证 验证安装包 1 2 $ gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig $ pacman-key -v archlinux-version-x86_64.iso.sig 设置键盘（一般不设置） 1 2 ls /usr/share/kbd/keymaps/**/*.map.gz # loadkeys de-latin1 判断机器是否是可以安装 Archlinux 1 # ls /sys/firmware/efi/efivars //文件夹下是否有固件">
+<meta itemprop="datePublished" content="2020-11-16T08:26:14+08:00" />
+<meta itemprop="dateModified" content="2020-11-16T08:26:14+08:00" />
+<meta itemprop="wordCount" content="1153">
+
+
+
+<meta itemprop="keywords" content="archlinux," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="archlinux 入坑|如何从零安装arclinux"/>
+<meta name="twitter:description" content="安装系统之前 验证 验证安装包 1 2 $ gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig $ pacman-key -v archlinux-version-x86_64.iso.sig 设置键盘（一般不设置） 1 2 ls /usr/share/kbd/keymaps/**/*.map.gz # loadkeys de-latin1 判断机器是否是可以安装 Archlinux 1 # ls /sys/firmware/efi/efivars //文件夹下是否有固件"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wxiaote</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">生活随笔</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">专栏/话题</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">日积月累</li>
+      </a><a href="/jd/">
+        <li class="mobile-menu-item">云招聘</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于博主</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wxiaote</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">生活随笔</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">专栏/话题</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">日积月累</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/jd/">云招聘</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于博主</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">archlinux 入坑|如何从零安装arclinux</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-16 </span>
+        <div class="post-category">
+            <a href="/categories/tool/"> tool </a>
+            <a href="/categories/archlinux/"> archlinux </a>
+            </div>
+          <span class="more-meta"> 约 1153 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装系统之前">安装系统之前</a>
+      <ul>
+        <li><a href="#验证">验证</a>
+          <ul>
+            <li><a href="#验证安装包">验证安装包</a></li>
+            <li><a href="#设置键盘一般不设置">设置键盘（一般不设置）</a></li>
+            <li><a href="#判断机器是否是可以安装-archlinux">判断机器是否是可以安装 Archlinux</a></li>
+          </ul>
+        </li>
+        <li><a href="#安装前设置">安装前设置</a>
+          <ul>
+            <li><a href="#网络设置">网络设置</a></li>
+            <li><a href="#系统分区">系统分区</a></li>
+            <li><a href="#安装装机软件">安装装机软件</a></li>
+            <li><a href="#生成分区表">生成分区表</a></li>
+            <li><a href="#进入系统安装">进入系统安装</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#系统安装">系统安装</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#语言设置">语言设置</a></li>
+            <li><a href="#用户设置">用户设置</a></li>
+            <li><a href="#sudo-权限">sudo 权限</a></li>
+            <li><a href="#网络自启">网络自启</a></li>
+            <li><a href="#设置efi引导">设置efi引导</a></li>
+            <li><a href="#退出">退出</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#软件安装">软件安装</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#archlinuxcn--第三方软件源">archlinuxcn  第三方软件源</a></li>
+            <li><a href="#gnome界面安装">gnome界面安装</a></li>
+            <li><a href="#kde界面安装">KDE界面安装</a></li>
+            <li><a href="#文件管理">文件管理</a></li>
+            <li><a href="#aur助手">Aur助手</a></li>
+            <li><a href="#下拉式终端">下拉式终端</a></li>
+            <li><a href="#ssh-sever">ssh-sever</a></li>
+            <li><a href="#谷歌浏览器">谷歌浏览器</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="安装系统之前">安装系统之前</h1>
+<h2 id="验证">验证</h2>
+<h3 id="验证安装包">验证安装包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig
+$ pacman-key -v archlinux-version-x86_64.iso.sig
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="设置键盘一般不设置">设置键盘（一般不设置）</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"> ls /usr/share/kbd/keymaps/**/*.map.gz
+ # loadkeys de-latin1
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="判断机器是否是可以安装-archlinux">判断机器是否是可以安装 Archlinux</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># ls /sys/firmware/efi/efivars  //文件夹下是否有固件，有则是efi
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="安装前设置">安装前设置</h2>
+<h3 id="网络设置">网络设置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">##链接WIFI 
+#iwctl工具 
+
+# ip link或
+设备 device list
+
+station ... scanning
+station ... get-network
+
+# nmcli 第二个工具（nmtui）比较简单
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="系统分区">系统分区</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#分区 cfdisk 或者fdisk
+fdisk -l
+cfdisvk  /dev/sda
+
+#格式化
+mkfs.vfat
+mkfs.ext4
+mkswap
+
+#挂载分区
+mount  /dev/sda1      /mnt
+mount /dev/sdb1  /mnt/root
+</code></pre></td></tr></table>
+</div>
+</div><p>分区推荐（来自官网）</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Mount point</th>
+<th style="text-align:center">Partition</th>
+<th style="text-align:center"><a href="https://en.wikipedia.org/wiki/Partition_type">Partition type</a></th>
+<th style="text-align:center">Suggested size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>[SWAP]</code></td>
+<td style="text-align:center"><code>/dev/*swap_partition*</code></td>
+<td style="text-align:center">Linux swap</td>
+<td style="text-align:center">More than 512 MiB</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>/mnt</code></td>
+<td style="text-align:center"><code>/dev/*root_partition*</code></td>
+<td style="text-align:center">Linux</td>
+<td style="text-align:center">Remainder of the device</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Mount point</th>
+<th style="text-align:center">Partition</th>
+<th style="text-align:center"><a href="https://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_type_GUIDs">Partition type</a></th>
+<th style="text-align:center">Suggested size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>/mnt/boot</code> or <code>/mnt/efi</code></td>
+<td style="text-align:center"><code>/dev/*efi_system_partition*</code></td>
+<td style="text-align:center"><a href="https://wiki.archlinux.org/index.php/EFI_system_partition">EFI system partition</a></td>
+<td style="text-align:center">At least 260 MiB</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[SWAP]</code></td>
+<td style="text-align:center"><code>/dev/*swap_partition*</code></td>
+<td style="text-align:center">Linux swap</td>
+<td style="text-align:center">More than 512 MiB</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>/mnt</code></td>
+<td style="text-align:center"><code>/dev/*root_partition*</code></td>
+<td style="text-align:center">Linux x86-64 root (/)</td>
+<td style="text-align:center">Remainder of the device</td>
+</tr>
+</tbody>
+</table>
+<h3 id="安装装机软件">安装装机软件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pacstrap  /mnt  base base-devel linux linux-firmware networkmanager vim intel-ucode(amd-ucode) git
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="生成分区表">生成分区表</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">genfstab  -U  /mnt &gt;&gt; /mnt/etc/fstab
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="进入系统安装">进入系统安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">arch-chroot  /mnt/
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="系统安装">系统安装</h1>
+<h3 id="语言设置">语言设置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#编辑系统语言</span>
+vim /etc/locale.grn
+------------------------
+<span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+<span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+
+<span class="c1">#设置默认语言</span>
+<span class="nb">echo</span> <span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8 &gt; /etc/locale.conf
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="时间设置">时间设置</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#设置时区</span>
+ln -sf /user/share/zonninfo/Asia/shnaghai /etc/lcoaltime （或者timedatectl set-timezone Asia/Shanghai）
+<span class="c1"># 网络时间</span>
+timedatectl set-ntp <span class="nb">true</span>
+<span class="c1">#时钟锁</span>
+hwclock --systoshc
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="键盘设置">键盘设置</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#设置键盘 可不设</span>
+/etc/vconsole.conf
+<span class="nv">KEYMAP</span><span class="o">=</span>de-latin1
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="电脑名称设置">电脑名称设置</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> myhostname &gt; /etc/hostname  
+编辑/etc/hosts
+--------------------------------------
+127.0.0.1	localhost
+::1		localhost
+127.0.1.1	myhostname.localdomain	myhostname
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="用户设置">用户设置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">useradd -m wxiaote
+passwd
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="sudo-权限">sudo 权限</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#开启wheel后</span>
+usermod -aG wheel, audio,video,storage,optical wxiaote
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="网络自启">网络自启</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable NetworkManager
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="设置efi引导">设置efi引导</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pacman -S grub efibootmgr
+
+#modprobe dm-mod（内核更好检测磁盘）
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">grub-install  --target<span class="o">=</span>x86_64-efi --efi-directory<span class="o">=</span>boot --bootloaer-id<span class="o">=</span>GRUB （efi安装）
+grub-install --no-floppy --recheck --debug /dev/sda （bios 安装）
+
+grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="退出">退出</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">exit
+umount -R /mnt
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="软件安装">软件安装</h1>
+<h3 id="archlinuxcn--第三方软件源">archlinuxcn  第三方软件源</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[archlinuxcn]
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+</code></pre></td></tr></table>
+</div>
+</div><p>更新</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ sudo pacman -Syu
+</code></pre></td></tr></table>
+</div>
+</div><p>安装秘钥</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ sudo pacman -S archlinuxcn-keyring
+</code></pre></td></tr></table>
+</div>
+</div><p>​	如果报错，需要生成一个新的密钥环</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ sudo pacman -Syu haveged
+$ systemctl start haveged
+$ systemctl enable haveged
+$ rm -rf /etc/pacman.d/gnupg
+$ sudo pacman-key --init
+$ sudo pacman-key --populate archlinux
+$ sudo pacman-key --populate archlinuxcn
+$ sudo pacman -S archlinuxcn-keyring
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="gnome界面安装">gnome界面安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pacman -S gnome gnome-tweak-tool  gnome-extra gdm
+systemctl enable gdm
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="kde界面安装">KDE界面安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 安装 xorg 服务</span>
+<span class="c1"># xorg服务是linux桌面的硬件接口，所有的窗管都是x窗口的实现</span>
+$ pacman -S xorg xorg-server
+
+<span class="c1"># 显卡</span>
+$ sudo pacman -S xf86-video-intel  <span class="c1">#intel#</span>
+$ sudo pacman -S xf86-video-ati  <span class="c1">#amd#</span>
+<span class="c1">#输入设备</span>
+$ sudo pacman -S xf86-input-libinput
+$ sudo pacman -S xf86-input-synaptics  <span class="c1">#触摸板驱动#</span>
+<span class="c1">#登录管理器</span>
+$ sudo pacman -S sddm sddm-kcm
+$ systemctl <span class="nb">enable</span> sddm
+<span class="c1">#KDE</span>
+$ sudo pacman -S plasma plasma-wayland-session kde-applications
+<span class="c1">#声音管理器</span>
+ sudo pacman -S alsa-utils pulseaudio pulseaudio-alsa
+<span class="c1">#输入法</span>
+$ sudo pacman -S fcitx fcitx-im fcitx-configtool fcitx-cloudpinyin kcm-fcitx fcitx-pinyin
+<span class="c1">#配置输入法</span>
+$ vim /home/myusername/.xprofile
+------
+<span class="nb">export</span> <span class="nv">GTK_IM_MODULE</span><span class="o">=</span>fcitx
+<span class="nb">export</span> <span class="nv">QT_IM_MODULE</span><span class="o">=</span>fcitx
+<span class="nb">export</span> <span class="nv">XMODIFIERS</span><span class="o">=</span><span class="s2">&#34;@im=fcitx&#34;</span>
+
+解决左边SHIFT键无法切换中英文
+<span class="nv">右键Fcitx托盘</span> <span class="o">=</span>&gt; <span class="nv">配置</span> <span class="o">=</span>&gt; <span class="nv">全局配置</span> <span class="o">=</span>&gt; <span class="nv">勾选显示高级设置</span> <span class="o">=</span>&gt; 不勾选只在额外切换键取消激活后才是用它进行切换，且勾选启用输入法间切换
+
+解决中文输入时英文全角问题
+<span class="nv">右键Fcitx托盘</span> <span class="o">=</span>&gt; <span class="nv">配置</span> <span class="o">=</span>&gt; <span class="nv">附加组件配置</span> <span class="o">=</span>&gt; <span class="nv">勾选显示高级设置</span> <span class="o">=</span>&gt; 不勾选全角字符
+
+解决云拼音不显示问题
+<span class="nv">右键Fcitx托盘</span> <span class="o">=</span>&gt; <span class="nv">配置</span> <span class="o">=</span>&gt; 附加组件配置
+找到云拼音支持，点击它右方的设置按钮，把谷歌设置成百度
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="文件管理">文件管理</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ sudo pacman -S nautilus    //ubuntu自带文件管理器
+$ sudo pacman -S ranger   //终端文件管理器
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="aur助手">Aur助手</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ sudo pacman -S yay
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="下拉式终端">下拉式终端</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"> sudo pacman -S yakuake   //并尽可能安装可选依赖
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="ssh-sever">ssh-sever</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo pacman -S openssh
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="谷歌浏览器">谷歌浏览器</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ sudo pacman -S google-chrome   //并尽可能安装可选依赖
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Wxiaote</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="/img/reward/webwxgetmsgimg.jpeg">
+        <span>微信打赏</span>
+      </label>
+    
+  </div>
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/archlinux/">archlinux</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2020/20200218/">
+            <span class="next-text nav-default">phxpaxos 项目的演示和实验</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:wxiaote@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.gitee.com/wxiaote" class="iconfont icon-gitee" title="gitee"></a>
+      <a href="https://www.github.com/Wxiaote" class="iconfont icon-github" title="github"></a>
+  <a href="https://wxiaote.gitee.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Wxiaote</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

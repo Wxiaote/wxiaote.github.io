@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>计算机网络 on Wxiaote</title>
+    <link>https://wxiaote.gitee.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 计算机网络 on Wxiaote</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Wxiaote</copyright>
+    <lastBuildDate>Mon, 11 Nov 2019 10:23:57 +0800</lastBuildDate><atom:link href="https://wxiaote.gitee.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>域名解析 | A记录 ，CNAME，MX，NS 你懂了吗</title>
+      <link>https://wxiaote.gitee.io/post/2019/20191111/</link>
+      <pubDate>Mon, 11 Nov 2019 10:23:57 +0800</pubDate>
+      
+      <guid>https://wxiaote.gitee.io/post/2019/20191111/</guid>
+      <description>域名解析 | A记录 ，CNAME，MX，NS 你懂了吗 域名解析 什么是域名解析？域名解析就是国际域名或者国内域名以及中文域名等域名申请后做的到IP地</description>
+    </item>
+    
+  </channel>
+</rss>

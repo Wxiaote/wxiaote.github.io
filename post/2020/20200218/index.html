@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>phxpaxos 项目的演示和实验 - Wxiaote</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Wxiaote" /><meta name="description" content="linux环境配置 1 2 3 4 5 6 7 helloworld@Vostro:~/Downloads/automake-1.14$ uname -a Linux Vostro 5.3.0-40-generic #32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux helloworld@Vostro:~$ cat /etc/lsb-release DISTRIB_ID=Ubuntu DISTRIB_RELEASE=18.04 DISTRIB_CODENAME=bionic DISTRIB_DESCRIPTION=&amp;#34;Ubuntu 18.04.4 LTS&amp;#34; 下载 phpaxos 源码 1 git clone https://github.com/Tencent/phxpaxos.git --recursive 下载过程中, 可能会报这样的错, 在运" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.77.0 with theme even" />
+
+
+<link rel="canonical" href="https://wxiaote.gitee.io/post/2020/20200218/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.46e432cab0205a872fc473c5c5a55521696198b9fdc55b7e68db06ab0d9e504f.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="phxpaxos 项目的演示和实验" />
+<meta property="og:description" content="linux环境配置 1 2 3 4 5 6 7 helloworld@Vostro:~/Downloads/automake-1.14$ uname -a Linux Vostro 5.3.0-40-generic #32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux helloworld@Vostro:~$ cat /etc/lsb-release DISTRIB_ID=Ubuntu DISTRIB_RELEASE=18.04 DISTRIB_CODENAME=bionic DISTRIB_DESCRIPTION=&#34;Ubuntu 18.04.4 LTS&#34; 下载 phpaxos 源码 1 git clone https://github.com/Tencent/phxpaxos.git --recursive 下载过程中, 可能会报这样的错, 在运" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxiaote.gitee.io/post/2020/20200218/" />
+<meta property="article:published_time" content="2020-02-18T19:34:26+08:00" />
+<meta property="article:modified_time" content="2020-02-18T19:34:26+08:00" />
+<meta itemprop="name" content="phxpaxos 项目的演示和实验">
+<meta itemprop="description" content="linux环境配置 1 2 3 4 5 6 7 helloworld@Vostro:~/Downloads/automake-1.14$ uname -a Linux Vostro 5.3.0-40-generic #32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux helloworld@Vostro:~$ cat /etc/lsb-release DISTRIB_ID=Ubuntu DISTRIB_RELEASE=18.04 DISTRIB_CODENAME=bionic DISTRIB_DESCRIPTION=&#34;Ubuntu 18.04.4 LTS&#34; 下载 phpaxos 源码 1 git clone https://github.com/Tencent/phxpaxos.git --recursive 下载过程中, 可能会报这样的错, 在运">
+<meta itemprop="datePublished" content="2020-02-18T19:34:26+08:00" />
+<meta itemprop="dateModified" content="2020-02-18T19:34:26+08:00" />
+<meta itemprop="wordCount" content="2331">
+
+
+
+<meta itemprop="keywords" content="phxpaxos,共识算法," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="phxpaxos 项目的演示和实验"/>
+<meta name="twitter:description" content="linux环境配置 1 2 3 4 5 6 7 helloworld@Vostro:~/Downloads/automake-1.14$ uname -a Linux Vostro 5.3.0-40-generic #32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux helloworld@Vostro:~$ cat /etc/lsb-release DISTRIB_ID=Ubuntu DISTRIB_RELEASE=18.04 DISTRIB_CODENAME=bionic DISTRIB_DESCRIPTION=&#34;Ubuntu 18.04.4 LTS&#34; 下载 phpaxos 源码 1 git clone https://github.com/Tencent/phxpaxos.git --recursive 下载过程中, 可能会报这样的错, 在运"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wxiaote</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">生活随笔</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">专栏/话题</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">日积月累</li>
+      </a><a href="/jd/">
+        <li class="mobile-menu-item">云招聘</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于博主</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wxiaote</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">生活随笔</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">专栏/话题</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">日积月累</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/jd/">云招聘</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于博主</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">phxpaxos 项目的演示和实验</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-02-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%98%E5%82%A8/"> 存储 </a>
+            </div>
+          <span class="more-meta"> 约 2331 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#linux环境配置">linux环境配置</a></li>
+        <li><a href="#下载--phpaxos-源码">下载  phpaxos 源码</a></li>
+        <li><a href="#环境编译">环境编译</a>
+          <ul>
+            <li><a href="#依赖关系">依赖关系</a></li>
+            <li><a href="#编译-leveldb">编译 leveldb</a></li>
+            <li><a href="#编译-protobuf">编译 protobuf</a></li>
+            <li><a href="#编译-phxpaxos">编译 PhxPaxos</a></li>
+            <li><a href="#编译-phxpaxos-plugin静态库">编译 PhxPaxos Plugin静态库</a></li>
+            <li><a href="#编译-gflags">编译 gflags</a></li>
+          </ul>
+        </li>
+        <li><a href="#三个sample-运行">三个sample 运行</a>
+          <ul>
+            <li><a href="#phxelection">phxelection</a></li>
+            <li><a href="#phxecho">phxecho</a></li>
+            <li><a href="#phxkv">phxkv</a></li>
+            <li><a href="#编译-grpc">编译 grpc</a></li>
+            <li><a href="#参考链接">[参考链接]</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="linux环境配置">linux环境配置</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helloworld@Vostro:~/Downloads/automake-1.14$ uname -a
+Linux Vostro 5.3.0-40-generic <span class="c1">#32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux</span>
+helloworld@Vostro:~$ cat /etc/lsb-release 
+<span class="nv">DISTRIB_ID</span><span class="o">=</span>Ubuntu
+<span class="nv">DISTRIB_RELEASE</span><span class="o">=</span>18.04
+<span class="nv">DISTRIB_CODENAME</span><span class="o">=</span>bionic
+<span class="nv">DISTRIB_DESCRIPTION</span><span class="o">=</span><span class="s2">&#34;Ubuntu 18.04.4 LTS&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="下载--phpaxos-源码">下载  phpaxos 源码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/Tencent/phxpaxos.git  --recursive
+</code></pre></td></tr></table>
+</div>
+</div><p>下载过程中, 可能会报这样的错, 在运行git clone命令时很容易出现这个错误，这是下载的包太大，网速慢超时报错。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/Tencent/phxpaxos.git  --recursive
+...
+git clone error RPC failed:curl <span class="m">56</span> GnuTLS recv error <span class="o">(</span>-54<span class="o">)</span>:Error in the pull <span class="k">function</span>
+fatar: The remote end hung up unexpectedly
+fatal : early EOF
+fatal : index-pack failed
+...
+</code></pre></td></tr></table>
+</div>
+</div><p>可通过更改设置解决,  <code>git config -l</code>  查看配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">- httpBuffer加大    
+git config --global http.postBuffer <span class="m">524288000</span>
+
+- 压缩配置
+git config --global core.compression -1    
+
+- 修改配置文件.bashrc
+<span class="nb">export</span> <span class="nv">GIT_TRACE_PACKET</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span> <span class="nv">GIT_TRACE</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span> <span class="nv">GIT_CURL_VERBOSE</span><span class="o">=</span><span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="环境编译">环境编译</h2>
+<h3 id="依赖关系">依赖关系</h3>
+<p>看一下各目录的依赖关系。如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">目录</th>
+<th style="text-align:left">编译对象</th>
+<th style="text-align:left">内部依赖</th>
+<th style="text-align:left">第三方库依赖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">根目录</td>
+<td style="text-align:left">libphxpaxos.a</td>
+<td style="text-align:left">无</td>
+<td style="text-align:left">protobuf,leveldb</td>
+</tr>
+<tr>
+<td style="text-align:left">plugin</td>
+<td style="text-align:left">libphxpaxos_plugin.a</td>
+<td style="text-align:left">libphxpaxos.a</td>
+<td style="text-align:left">glog</td>
+</tr>
+<tr>
+<td style="text-align:left">sample/phxelection</td>
+<td style="text-align:left">可执行程序</td>
+<td style="text-align:left">libphxpaxos.a,libphxpaxos_plugin.a</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left">sample/phxecho</td>
+<td style="text-align:left">可执行程序</td>
+<td style="text-align:left">libphxpaxos.a,libphxpaxos_plugin.a</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left">sample/phxkv</td>
+<td style="text-align:left">可执行程序</td>
+<td style="text-align:left">libphxpaxos.a,libphxpaxos_plugin.a</td>
+<td style="text-align:left">grpc</td>
+</tr>
+<tr>
+<td style="text-align:left">src/ut</td>
+<td style="text-align:left">单元测试</td>
+<td style="text-align:left">无</td>
+<td style="text-align:left">gtest,gmock</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>:  如仅需使用<code>libphxpaxos.a</code>进行开发，只需要编译leveldb和protobuf。而如果希望使用我们的glog打日志插件模块，或者想尝试编译sample目录，或用于phxsql使用，则还需要编译<code>libphxpaxos_plugin.a</code>, 这个静态库依赖了glog。</p>
+<h3 id="编译-leveldb">编译 leveldb</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">进入third_party/leveldb目录。
+下载 leveldb1.18版  https://github.com/google/leveldb/releases
+make，编译完成后会在当前目录生成libleveldb.a文件。
+mkdir lib建立一个lib目录，然后cd lib<span class="p">;</span>ln -s ../libleveldb.a libleveldb.a建立一个软链，PhxPaxos通过lib这个目录来寻址静态库。
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="编译-protobuf">编译 protobuf</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">进入third_party/protobuf目录。
+./autogen.sh
+</code></pre></td></tr></table>
+</div>
+</div><p>出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helloworld@Vostro:~/Workspace/gopath/src/github.com/bingo/phxpaxos/third_party/protobuf$ ./autogen.sh 
+Google Mock not present.  Fetching gmock-1.7.0 from the web...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  <span class="m">0</span>     <span class="m">0</span>    <span class="m">0</span>     <span class="m">0</span>    <span class="m">0</span>     <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> --:--:--  0:02:12 --:--:--     0curl: <span class="o">(</span>7<span class="o">)</span> Failed to connect to googlemock.googlecode.com port 443: Connection timed out
+</code></pre></td></tr></table>
+</div>
+</div><p>​       下载[gmoock](git clone https:<em>//github.com/paulsapps/gmock-1.7.0</em> ])  到当前目录,或将third_party/目录下gmock文件夹，直接拷贝到third_party/protobuf文件夹下,再次执行 ./autogen.sh</p>
+<p>出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">&gt;&gt;&gt; configure.ac:93: error: possibly undefined macro: AC_PROG_LIBTOOL
+      If this token and others are legitimate, please use m4_pattern_allow.
+      See the Autoconf documentation.
+&gt;&gt;&gt; autoreconf: /usr/bin/autoconf failed with <span class="nb">exit</span> status: <span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>下载  libtool libsysfs-dev</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo  apt  install  libtool libsysfs-dev
+</code></pre></td></tr></table>
+</div>
+</div><p>再次执行 ./autogen.sh</p>
+<p>如果还是报错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">libtoolize --copy --force
+</code></pre></td></tr></table>
+</div>
+</div><p>报错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helloworld@Vostro:~/Workspace/gopath/src/github.com/bingo/phxpaxos/third_party/protobuf$ ./autogen.sh 
++ mkdir -p third_party/googletest/m4
++ autoreconf -f -i -Wall,no-obsolete
+libtoolize: putting auxiliary files in <span class="s1">&#39;.&#39;</span>.
+libtoolize: copying file <span class="s1">&#39;./ltmain.sh&#39;</span>
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, <span class="s1">&#39;m4&#39;</span>.
+libtoolize: copying file <span class="s1">&#39;m4/libtool.m4&#39;</span>
+libtoolize: copying file <span class="s1">&#39;m4/ltoptions.m4&#39;</span>
+libtoolize: copying file <span class="s1">&#39;m4/ltsugar.m4&#39;</span>
+libtoolize: copying file <span class="s1">&#39;m4/ltversion.m4&#39;</span>
+libtoolize: copying file <span class="s1">&#39;m4/lt~obsolete.m4&#39;</span>
+Unescaped left brace in regex is illegal here in regex<span class="p">;</span> marked by &lt;-- HERE in m/<span class="se">\$</span><span class="o">{</span> &lt;-- HERE <span class="o">([</span>^ <span class="se">\t</span><span class="o">=</span>:+<span class="o">{}]</span>+<span class="o">)}</span>/ at /usr/local/bin/automake line 3930.
+autoreconf: automake failed with <span class="nb">exit</span> status: <span class="m">255</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>原因是Perl不支持以前的写法。</p>
+<p>解决方法</p>
+<p>编辑提示的文件<strong>xxx</strong>的行号<strong>xxx</strong>
+例如 <strong>/usr/bin/automake</strong> 第 <strong>3930</strong> 行
+将  - <code>$text =~ s/\${([^ \t=:+{}]+)}/substitute_ac_subst_variables_worker ($1)/ge;</code>
+修改为 - <code>$text =~ s/\$[{]([^ \t=:+{}]+)}/substitute_ac_subst_variables_worker ($1)/ge;</code></p>
+<p>出现exit 0 即可</p>
+<p>继续编译</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./configure <span class="nv">CXXFLAGS</span><span class="o">=</span>-fPIC --prefix<span class="o">=[</span>当前目录绝对路径<span class="o">]</span>, 这一步CXXFLAGS和--prefix都必须设置对。  可直接使用./configure <span class="nv">CXXFLAGS</span><span class="o">=</span>-fPIC --prefix<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
+make <span class="o">&amp;&amp;</span> make install
+编译完成后检查是否在当前目录成功生成bin,include,lib三个子目录。
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="编译-glog">编译 glog</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">进入third_party/glog目录。
+./configure <span class="nv">CXXFLAGS</span><span class="o">=</span>-fPIC -prefix<span class="o">=[</span>当前目录绝对路径<span class="o">]</span>, 这一步CXXFLAGS和-prefix都必须设置对。
+sudo  make <span class="o">&amp;&amp;</span> sudo make install
+编译完成检查是否在当前目录成功生成lib子目录，并检查在lib目录是否成功生成静态库libglog.a.
+</code></pre></td></tr></table>
+</div>
+</div><p>出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">&gt;&gt;&gt; <span class="nb">cd</span> . <span class="o">&amp;&amp;</span> automake-1.14 --gnu
+/bin/sh:line 4: automake-1.14: <span class="nb">command</span> not found
+make: *** <span class="o">[</span>Makefile.in<span class="o">]</span> error <span class="m">1</span>
+<span class="o">[</span>root@localhost glog<span class="o">]</span><span class="c1"># make &amp;&amp; make install</span>
+ <span class="nb">cd</span> . <span class="o">&amp;&amp;</span> automake-1.14 --gnu
+/bin/sh:line 4: automake-1.14: <span class="nb">command</span> not found
+make: *** <span class="o">[</span>Makefile.in<span class="o">]</span> error <span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>安装依赖</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">helloworld@Vostro:~/Downdown wget http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz
+helloworld@Vostro:~/Downdown wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+tar xvzf autoconf-2.69.tar.gz
+cd autoconf-2.69
+yum -y install libtool libsysfs-dev 
+./configure
+make &amp;&amp; make install
+
+tar xvzf automake-1.14.tar.gz
+cd automake-1.14
+./configure
+make &amp;&amp; make install
+
+automake --version
+&gt;&gt;&gt; automake (GNU automake) 1.14
+</code></pre></td></tr></table>
+</div>
+</div><p>​      Makefile:372: recipe for target &lsquo;aclocal.m4&rsquo; failed</p>
+<p>出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> sudo make <span class="o">&amp;&amp;</span> sudo  make  install 
+ <span class="nb">cd</span> . <span class="o">&amp;&amp;</span> automake-1.14 --gnu
+parallel-tests: error: required file <span class="s1">&#39;./test-driver&#39;</span> not found
+parallel-tests:   <span class="s1">&#39;automake --add-missing&#39;</span> can install <span class="s1">&#39;test-driver&#39;</span>
+Makefile:928: recipe <span class="k">for</span> target <span class="s1">&#39;Makefile.in&#39;</span> failed
+make: *** <span class="o">[</span>Makefile.in<span class="o">]</span> Error <span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>根据提示操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo automake --add-missing
+sudo  aclocal-1.14
+sudo  make <span class="o">&amp;&amp;</span> sudo  make install
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="编译-phxpaxos">编译 PhxPaxos</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">进入PhxPaxos根目录。
+./autoinstall.sh
+make <span class="o">&amp;&amp;</span> make install <span class="o">(</span>默认使用-O2编译优化参数，如需编译debug版本，则命令为make <span class="nv">debug</span><span class="o">=</span>y<span class="o">)</span>
+编译完成后检查是否在当前目录成功生成lib子目录，并检查在lib目录是否成功生成静态库libphxpaxos.a.
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="编译-phxpaxos-plugin静态库">编译 PhxPaxos Plugin静态库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> PhxPaxos/plugin
+make <span class="o">&amp;&amp;</span> make install
+至此，PhxPaxos Plugin静态库编译成功，检查上层lib目录下是否成功生成静态库libphxpaxos_plugin.a.
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="编译-gflags">编译 gflags</h3>
+<p>源码已经跟随第一步下载到third_party/文件夹下，官网手册里没有编译它的步骤实乃大坑。因为不编译它，会在编译sample/phxecho中报错：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">g++: error: /home/helloworld/Workspace/gopath/src/github.com/bingo/phxpaxos/third_party/leveldb/lib/libleveldb.a: No such file or directory
+Makefile:36: recipe <span class="k">for</span> target <span class="s1">&#39;phxecho&#39;</span> failed
+make: *** <span class="o">[</span>phxecho<span class="o">]</span> Error 1&gt;&gt;&gt; g++: error：/root/git/phxpaxos/third_party/gflags/lib/libgflags.a：No such file or directory
+</code></pre></td></tr></table>
+</div>
+</div><p>编译</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">camke .
+sudo make <span class="o">&amp;&amp;</span> sudo make install  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="三个sample-运行">三个sample 运行</h2>
+<h3 id="phxelection">phxelection</h3>
+<p>介绍:  This is very simple sample to use phxpaxos to election.
+Check the code in election.cpp, that is really simple.</p>
+<p>了解选举过程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo  make
+$ ./phxelection 127.0.0.1:11111 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113
+$ ./phxelection 127.0.0.1:11112 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113
+$ ./phxelection 127.0.0.1:11113 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://github.com/Wxiaote/cloudimg/blob/master/2020/02/20200219033841.png?raw=true" alt="image-20200216230700814"></p>
+<h3 id="phxecho">phxecho</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helloworld@Vostro:~/Workspace/gopath/src/github.com/bingoaxos/sample/phxkv$ sudo  make
+helloworld@Vostro:~/Workspace/gopath/src/github.com/bingoaxos/sample/phxkv$ mkdir log
+<span class="c1">#运行</span>
+$ ./phxecho  127.0.0.1:11111 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113
+$ ./phxecho  127.0.0.1:11112 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113
+$ ./phxecho  127.0.0.1:11113 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="phxkv">phxkv</h3>
+<p>直接make发现出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">--grpc_out: protoc-gen-grpc: Plugin failed with status code 1.
+/home/helloworld/Workspace/gopath/src/github.com/bingo/phxpaxos/makefile.mk:58: recipe <span class="k">for</span> target <span class="s1">&#39;phxkv.grpc.pb.cc&#39;</span> failed
+make: *** <span class="o">[</span>phxkv.grpc.pb.cc<span class="o">]</span> Error <span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>原因: 缺少第三方依赖 grpc</p>
+<h3 id="编译-grpc">编译 grpc</h3>
+<p>源码  <a href="https://github.com/grpc/grpc.git"> grpc源码 </a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone --recursive https://github.com/grpc/grpc.git
+<span class="nb">cd</span> grpc
+git submodule update --init
+</code></pre></td></tr></table>
+</div>
+</div><p>编译</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">make
+</code></pre></td></tr></table>
+</div>
+</div><p>出错</p>
+<ul>
+<li>
+<p>zlib 没有自动编译</p>
+<p>检查是否第三方软件下载完全</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ git submodule update --init  发现无错误
+<span class="c1">#重新下载编译</span>
+$ <span class="nb">cd</span> third_party/
+$ git clone https://github.com/madler/zlib.git
+$ <span class="nb">cd</span> zlib
+$ mdkir .build
+$ <span class="nb">cd</span> .build
+$ cmake ..
+$ make
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>protobuf 出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">configure.ac:30: error: possibly undefined macro: AC_PROG_LIBTOOL       
+If this token and others are legitimate, please use m4_pattern_allow.       
+See the Autoconf documentation.
+</code></pre></td></tr></table>
+</div>
+</div><p>google出来的答案都是说, 安装下列软件,可是自己早下载过了,没有找到原因</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install  libtool libgflags-dev libgtest-dev
+</code></pre></td></tr></table>
+</div>
+</div><p>最后使用了之前编译好的 protobuf, 神奇的坑&hellip;</p>
+</li>
+</ul>
+<p>最后回到phxkv,运行例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ make 
+$ sh prepare.sh
+$ <span class="c1">#sample</span>
+<span class="c1">#./phxkv_grpcserver 127.0.0.1:21111 127.0.0.1:11111 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113 ./storage/kvdb_0 ./storage/paxoslog_0</span>
+<span class="c1">#./phxkv_grpcserver 127.0.0.1:21112 127.0.0.1:11112 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113 ./storage/kvdb_1 ./storage/paxoslog_1</span>
+<span class="c1">#./phxkv_grpcserver 127.0.0.1:21113 127.0.0.1:11113 127.0.0.1:11111,127.0.0.1:11112,127.0.0.1:11113 ./storage/kvdb_2 ./storage/paxoslog_2</span>
+
+<span class="c1">#client 测试</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21112 put key_hello value_paxos 0</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21112 getlocal key_hello</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21112 getglobal key_hello</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21112 delete key_hello 0</span>
+
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21111 put key_hello value_paxos 0</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21111 getlocal key_hello</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21111 getglobal key_hello</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21111 delete key_hello 0</span>
+
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21113 put key_hello value_paxos 0</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21113 getlocal key_hello</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21113 getglobal key_hello</span>
+<span class="c1">#./phxkv_client_tools 127.0.0.1:21113 delete key_hello 0</span>
+
+<span class="o">[</span>注意<span class="o">]</span>可能会遇到文件权限的原因,加上sudo就ok了
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://github.com/Wxiaote/cloudimg/blob/master/2020/02/20200219033817.png?raw=true" alt="image-20200219005222689"></p>
+<p><img src="https://github.com/Wxiaote/cloudimg/blob/master/2020/02/20200219033909.png?raw=true" alt="image-20200219021235326"></p>
+<p>![image-20200609101441610](/home/helloworld/.config/Typora/typora-user-images/image-20200609101441610.png</p>
+<h3 id="参考链接">[参考链接]</h3>
+<p><a href="https://github.com/Tencent/phxpaxos">phxpaxos: https://github.com/Tencent/phxpaxos</a></p>
+<p><a href="https://github.com/Tencent/phxpaxos/wiki/%E4%B8%AD%E6%96%87%E8%AF%A6%E7%BB%86%E7%BC%96%E8%AF%91%E6%89%8B%E5%86%8C">中文详细编译手册:   https://github.com/Tencent/phxpaxos/wiki/中文详细编译手册</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Wxiaote</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-02-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="/img/reward/webwxgetmsgimg.jpeg">
+        <span>微信打赏</span>
+      </label>
+    
+  </div>
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/phxpaxos/">phxpaxos</a>
+          <a href="/tags/%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/">共识算法</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/2020/20201116/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">archlinux 入坑|如何从零安装arclinux</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/2019/20191111/">
+            <span class="next-text nav-default">域名解析 | A记录 ，CNAME，MX，NS 你懂了吗</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:wxiaote@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.gitee.com/wxiaote" class="iconfont icon-gitee" title="gitee"></a>
+      <a href="https://www.github.com/Wxiaote" class="iconfont icon-github" title="github"></a>
+  <a href="https://wxiaote.gitee.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Wxiaote</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
